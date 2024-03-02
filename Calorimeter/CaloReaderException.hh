@@ -1,27 +1,27 @@
-//CaloReaderException Class
+// Exercise 10: CaloReaderException Class
+// Author: Jurjan Bootsma
 
 #ifndef CALOREADEREXCEPTION_HH
 #define CALOREADEREXCEPTION_HH
 
 #include <string>
+#include <iostream>
+using namespace std ;
 
-/*
-This expection class is thrown in CaloReader when the file cannot be openend
-correctly.
-*/
+// Exception class that is thrown when file is not opened correctly
 class CaloReaderException {
-    private:
-    std::string _what ;
+public:
+    CaloReaderException(const char* file): _what(file) {} // Constructor
+    const char* what() const { return _what.c_str() ; } // String of file that not opened
 
-    public:
-    CaloReaderException(const char* What) : _what(What) {}
-    const char* what() {return _what.c_str();}
+private:
+    string _what ; // String of file
 
 } ;
 
-//Global so that this can be printed in main.
-std::ostream& operator<<(std::ostream& os, const CaloReaderException& cre) {
-  return (os << "CaloReaderException: This file cannot be opened.") ;
+// The error message
+inline ostream& operator<<(ostream& os, const CaloReaderException& cre) {
+    return (os << "Reading error: file " << cre.what() <<  " not opened correctly" << endl);
 }
 
 #endif

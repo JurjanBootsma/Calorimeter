@@ -1,68 +1,34 @@
-//Calorimeter Class
+// Exercise 10: Calorimeter class header file
+// Author: Jurjan Bootsma
 
 #ifndef CALORIMETER_HH
 #define CALORIMETER_HH
 
 #include "CaloGrid.hh"
 #include "Point.hh"
-#include <iomanip>
+#include <iostream>
+#include <fstream>
 
-/*
-This is the calorimeter class, with some functions.
-*/
+// Class that describes a calorimeter with a position and a grid of cells
 class Calorimeter {
 public:
 
-  Calorimeter(int sizex, int sizey, Point position=Point(0,0,0)) : 
+  Calorimeter(int sizex, int sizey, Point position=Point(0,0,0)) : // Constructor
     _grid(sizex,sizey), _pos(position)
   {}
 
+  // Accessors
   CaloGrid& grid() { return _grid ; }
-
-  //Accessor Functions
   const CaloGrid& grid() const { return _grid ; }
   Point& position() { return _pos ; }
   const Point& position() const { return _pos ; }
 
-  //Function to get the cell from a certain readout ID.
-  CaloCell* findCellByID(int id) {
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-                if (grid().cell(i,j)->readoutID() == id) {
-                    return grid().cell(i,j);
-                }
-            }
-        }
-    return 0;
-  }
-
-  //Function to set all energies to 0.
-  void clear() {
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            grid().cell(i,j)->setEnergy(0) ;
-            }
-        }   
-  }
-
-  //Function to visualize the setup of the calorimeter.
-  void dumpEvent(std::ostream& os=cout) {
-    for (int i = 0; i < 10; i++) {
-        os << std::endl ;
-        for (int j = 0; j < 10; j++) {
-            os << std::setw(3);
-            if (grid().cell(i,j)->energy() < 0.5) {
-                os << "." ;
-            } else if (grid().cell(i,j)->energy() > 2) {
-                os << "X" ;
-            } else {
-                os << "x" ;
-            }
-
-            }
-        }
-        os << std::endl << std::endl ;
-  }
+  // Functions
+  void dumpReadoutMap(std::ostream& os = std::cout) const ; // Print grid of IDs
+  CaloCell* findCellByID(int id) ; // Return cell by entering ID
+  void clear() ; // Set energy of every CaloCell in Calorimeter to 0
+  void dumpEvent(std::ostream& os=cout) ; // Print energy cells in grid
+  void dumpClusters(std::ostream& os=cout) ; // Print all the cluster IDs
 
 private:
 
@@ -72,4 +38,4 @@ private:
 
 } ;
 
-#endif
+#endif 
